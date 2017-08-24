@@ -1,0 +1,28 @@
+
+header {
+  margin-left: 10px;
+  font-weight: bolder;
+
+}
+
+.wrapper{
+  display: flex;
+  flex-wrap:wrap;
+}
+
+.wrapper li{
+  /*box-sizing: border-box;*/
+  border: 1px solid black;
+  list-style-type: none;
+}
+
+li{
+  padding: 5px;
+  margin: 5px;
+  flex-grow: 5;
+}
+
+p{
+  color: blue;
+  font-weight: bold;
+}

@@ -1,0 +1,48 @@
+
+header {
+  font-weight: bolder;
+
+}
+
+.wrapper{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.wrapper li{
+  /*box-sizing: border-box;*/
+  border: 1px solid black;
+  list-style-type: none;
+}
+
+li{
+  padding: 5px;
+  margin: 5px;
+  flex-grow: 4;
+  display: flex;
+  /*justify-content: center;*/
+  flex-wrap: wrap;
+  max-width: 500px;
+}
+
+span .first{
+  flex-grow: 1;
+}
+
+span .second{
+  flex-grow: 1;
+}
+
+span .third{
+  flex-grow: 1;
+}
+
+h1{
+  font-weight: bold;
+}
+
+img{
+  border-radius: 180px;
+  border: 1px solid gray;
+  float: left;
+}

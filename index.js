@@ -7,6 +7,11 @@ const MongoClient = require("mongodb").MongoClient;
 const uri = "mongodb://localhost:27017/robots";
 const data = require("./data");
 
+// Mongoose
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+mongoose.connect('mongodb://localhost:27017/robots');
+
 
 //Mustache
 const mustacheExpress = require("mustache-express");
@@ -26,8 +31,8 @@ app.use(express.static("public"))
 
 //bcrypt
 const bcrypt = require('bcryptjs');
-const hash = bcrypt.hashSync(password, 8);
-bcrypt.compareSync(password, hash);
+// const hash = bcrypt.hashSync(password, 8);
+// bcrypt.compareSync(password, hash);
 
 //bcrypt user authentication
 const userSchema = new mongoose.Schema({
@@ -69,9 +74,8 @@ app.get("/jobs", function(req, res){
   MongoClient.connect(uri)
     .then(function(db){
       return db.collection("users").find({job:null}).toArray(function(err, doc){
-        // console.log(doc);
         res.render("jobs", {robot:doc});
-      }); //pulls in first present but won't work with find. Need to be able to display it
+      });
       db.close();
     });
   });
@@ -92,15 +96,45 @@ app.get('/user', function (req, res) {
   res.render("user", data);
 });
 
+
+// app.post("/", function(req,res){
+//   console.log(req.body);
+//   User.create({
+//     username: req.body.username,
+//     password: req.body.password,
+//     email: req.body.email,
+//     company: req.body.company
+//   })
+//   .then(handleSuccess)
+//   .catch(handleError);
+//   res.redirect("/completed")
+// });
+
+app.get("/completed", function(req, res){
+  return User.find()
+  .then(function(users){
+  res.render("completed", {data: users})
+});
+
 app.get("/login", function(req,res){
   res.render("login");
-})
-
-app.get('/user/:id', function (req,res){
-  let userId= req.params.id-1;
-  let user = data.users[userId];
-  res.render('user', user);
 });
+
+
+// app.get('/user/:id', (req, res) => {
+//   let myId = parseInt(req.params.id);
+//   MongoClient.connect(uri)
+//     .then((db) => {
+//       let collection = db.collection('users');
+//       console.log('CONNECTING');
+//       collection.findOne({'id' : myId})
+//     .then((myUser) => {
+//       console.log("RENDERING...");
+//       console.log(myUser);
+//       res.render('user', myUser);
+//       db.close();
+//     })})
+// });
 
 app.listen(3000, function () {
   console.log('All hail AI');

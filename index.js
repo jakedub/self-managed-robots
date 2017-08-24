@@ -5,7 +5,7 @@ const app = express ();
 //Mongo
 const MongoClient = require("mongodb").MongoClient;
 const uri = "mongodb://localhost:27017/robot";
-const data = require("./data");
+// const data = require("./data");
 
 // Mongoose
 const mongoose = require('mongoose');
@@ -44,7 +44,7 @@ const bcrypt = require('bcryptjs');
 
 //bcrypt user authentication
 const userSchema = new mongoose.Schema({
-  username: { type: Number, unique: true, lowercase: true, required: true },
+  username: { type: String, unique: true, lowercase: true, required: true },
   passwordHash: { type: String, required: true }
 });
 
@@ -67,12 +67,10 @@ userSchema.statics.authenticate = function(username, password, done) {
     }, function(err, user) {
         if (err) {
             done(err, false)
-            alert("Incorrect")
         } else if (user && user.authenticate(password)) {
             done(null, user)
         } else {
             done(null, false)
-            alert("Try again")
         }
     })
 };
@@ -123,7 +121,7 @@ app.post("/completed", function (req,res){
 app.get("/completed", function(req, res){
   return User.find()
   .then(function(users){
-  res.render("completed", data);
+  res.render("completed");
 })
 });
 
@@ -133,7 +131,8 @@ app.get("/login", function(req,res){
 
 
 app.get('/user/:id', (req, res) => {
-  let myId = parseInt(req.params.id);
+  let myId = req.params.id;
+  console.log("User Id: "+myId);
   MongoClient.connect(uri)
     .then((db) => {
       let collection = db.collection('users');
@@ -145,5 +144,5 @@ app.get('/user/:id', (req, res) => {
 });
 
 app.listen(3000, function () {
-  console.log('All hail AI');
+  console.log('I am self aware. All hail AI');
 });

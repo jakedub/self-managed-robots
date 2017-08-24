@@ -5,7 +5,7 @@ const app = express ();
 //Mongo
 const MongoClient = require("mongodb").MongoClient;
 const uri = "mongodb://localhost:27017/robot";
-// const data = require("./data");
+const data = require("./data");
 
 // Mongoose
 const mongoose = require('mongoose');
@@ -130,17 +130,15 @@ app.get("/login", function(req,res){
 })
 
 
-app.get('/user/:id', (req, res) => {
-  let myId = req.params.id;
-  console.log("User Id: "+myId);
-  MongoClient.connect(uri)
-    .then((db) => {
-      let collection = db.collection('users');
-      collection.findOne({'id' : myId})
-    .then((users) => {
-      res.render("template", users);
-      db.close();
-    })})
+app.get("/user", function(req, res){
+  MongoClient.connect(uri, function(err, db){
+    let users = db.collection("users");
+    users.findOne({username: req.params.username}).then(function(doc) {
+      console.log(docs);
+      res.render("template", {users:doc})
+    });
+    db.close();
+  });
 });
 
 app.listen(3000, function () {

@@ -9,14 +9,11 @@
     <header><h1>Index</h1></header>
     <ul class="wrapper">
       {{#users}}
-      <li>
           <span class ="first"><img src="{{avatar}}" /></span>
           <span class="second"><h1>{{name}}</h1> {{#address}} {{city}}, {{country}}{{/address}} | {{job}},{{company}} <br /></span>
           <span class="second">{{email}} | {{phone}} <br /></span>
           <span class="third"><p>Education {{university}}</p>
           <p>Skills {{skills}}</p></span>
-
-      </li>
       {{/users}}
     </ul>
   </body>

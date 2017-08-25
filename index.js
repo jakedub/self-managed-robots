@@ -28,6 +28,10 @@ app.use(session({
     saveUninitialized: false,
 }));
 
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+
 //NOTE  DO NOT UNCOMMENT
 // MongoClient.connect(uri)
 //   .then(function(db){
@@ -127,6 +131,36 @@ app.get("/completed", function(req, res){
 
 app.get("/login", function(req,res){
   res.render("login");
+})
+
+//creates a hashed password. that being the password set for all the robots
+app.get("/", function(req, res){
+  let hash = bcrypt.hashSync("that", 8)
+  console.log(hash);
+})
+
+//loads login page
+app.get("/login", function(req,res){
+  res.render("login");
+});
+
+//checks against login and directs to main
+app.post("/login", function(req,res){
+  let username = req.body.username
+  let password = req.body.password
+  MongoClient.connect(url)
+  .then(function functionName(db){
+    db.collection("users")
+    .findOne({username: username})
+    .then(function(data){
+      db.close()
+      if (bcrypt.compareSynce(password.data.passwordHash)){
+        res.redirect("/");
+      } else {
+        res.send("no")
+      }
+    })
+  })
 })
 
 
